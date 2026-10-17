@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #e5e3e1; /* fondo gris alrededor de la hoja */
+  --accent: #0f6cbd;
+}
+
+@layer base {
+  body {
+    @apply bg-[#f3f2f1] text-[#323130] m-0 p-0 overflow-hidden h-screen w-screen font-sans antialiased;
+  }
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+}
+
+/* ============ Tipografía del documento ============ */
+.ProseMirror {
+  outline: none;
+  font-family: Calibri, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 12pt;
+  line-height: 1.55;
+  color: #201f1e;
+  word-wrap: break-word;
+}
+.ProseMirror ::selection { background: #cce8ff; }
+
+.ProseMirror p { margin: 0 0 0.8em; }
+
+.ProseMirror h1, .ProseMirror h2, .ProseMirror h3 {
+  line-height: 1.25;
+  font-weight: 600;
+  margin: 1.1em 0 0.4em;
+}
+.ProseMirror > :first-child { margin-top: 0; }
+.ProseMirror h1 { font-size: 2.25em; color: #0f6cbd; }
+.ProseMirror h2 { font-size: 1.6em;  color: #0c5699; }
+.ProseMirror h3 { font-size: 1.25em; color: #094074; }
+
+/* Listas (Tailwind preflight las deja sin viñetas ni números) */
+.ProseMirror ul, .ProseMirror ol { margin: 0 0 0.8em; padding-left: 1.75em; }
+.ProseMirror ul { list-style: disc; }
+.ProseMirror ul ul { list-style: circle; }
+.ProseMirror ul ul ul { list-style: square; }
+.ProseMirror ol { list-style: decimal; }
+.ProseMirror ol ol { list-style: lower-alpha; }
+.ProseMirror ol ol ol { list-style: lower-roman; }
+.ProseMirror li { margin: 0.15em 0; }
+.ProseMirror li > p { margin: 0; }
+.ProseMirror li > ul, .ProseMirror li > ol { margin: 0.15em 0 0; }
+
+/* Cita, código, línea */
+.ProseMirror blockquote {
+  margin: 1em 0;
+  padding: 0.25em 0 0.25em 1em;
+  border-left: 3px solid #0f6cbd;
+  color: #605e5c;
+  font-style: italic;
+}
+.ProseMirror blockquote p:last-child { margin-bottom: 0; }
+.ProseMirror code {
+  background: #f3f2f1;
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+}
+.ProseMirror pre {
+  background: #f3f2f1;
+  border: 1px solid #e1dfdd;
+  border-radius: 4px;
+  padding: 0.75em 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+}
+.ProseMirror pre code { background: none; padding: 0; }
+.ProseMirror hr { border: 0; border-top: 1px solid #c8c6c4; margin: 1.5em 0; }
+
+/* ============ Tablas ============ */
+.ProseMirror .tableWrapper { overflow-x: auto; margin: 1em 0; }
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1em 0;
+  overflow: hidden;
+}
+.ProseMirror .tableWrapper table { margin: 0; }
+.ProseMirror table td, .ProseMirror table th {
+  position: relative;
+  min-width: 1em;
+  border: 1px solid #c8c6c4;
+  padding: 6px 8px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.ProseMirror table td > p, .ProseMirror table th > p { margin: 0; }
+.ProseMirror table th {
+  font-weight: 600;
+  text-align: left;
+  background-color: #f3f2f1;
+}
+.ProseMirror .selectedCell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 108, 189, 0.18);
+  pointer-events: none;
+}
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: #0f6cbd;
+  pointer-events: none;
+}
+.ProseMirror.resize-cursor { cursor: col-resize; }
+
+/* ============ Imágenes ============ */
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 1em 0;
+}
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid #0f6cbd;
+  outline-offset: 2px;
+}
+
+/* ============ Salto de página ============ */
+/* Simula el hueco entre dos hojas: mismo color que el lienzo y sombra en los bordes */
+.ProseMirror .page-break {
+  position: relative;
+  height: 28px;
+  margin: 25.4mm -25.4mm; /* margen inferior/superior de hoja + anula el padding lateral */
+  background-color: var(--canvas);
+  box-shadow:
+    inset 0 7px 6px -6px rgba(0,0,0,0.22),
+    inset 0 -7px 6px -6px rgba(0,0,0,0.22);
+  cursor: default;
+  user-select: none;
+  page-break-after: always; /* html2pdf / impresión */
+}
+.ProseMirror .page-break::after {
+  content: 'Salto de página';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: #8a8886;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.ProseMirror .page-break.ProseMirror-selectednode {
+  outline: 2px solid #0f6cbd;
+  outline-offset: -2px;
+}
+
+/* ============ Scrollbars estilo Fluent ============ */
+.custom-scrollbar::-webkit-scrollbar { width: 12px; height: 12px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: var(--canvas); }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #b3b0ad;
+  border-radius: 6px;
+  border: 3px solid var(--canvas);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #8a8886; }
+.custom-scrollbar::-webkit-scrollbar-corner { background: var(--canvas); }
+
+.custom-scrollbar-thin::-webkit-scrollbar { height: 8px; }
+.custom-scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar-thin::-webkit-scrollbar-thumb { background-color: #c8c6c4; border-radius: 4px; }
+.custom-scrollbar-thin::-webkit-scrollbar-thumb:hover { background-color: #a19f9d; }
