@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --canvas: #e5e3e1; /* fondo gris alrededor de la hoja */
+  --chrome: #f9fbfd;  /* barra de título, pestañas y barra de estado */
+  --ribbon: #edf2fa;  /* panel de la cinta (estilo Google Docs) */
+  --canvas: #eceff5;  /* fondo alrededor de la hoja */
   --accent: #0f6cbd;
+  --line: #d7dce5;
 }
 
 @layer base {
   body {
-    @apply bg-[#f3f2f1] text-[#323130] m-0 p-0 overflow-hidden h-screen w-screen font-sans antialiased;
+    @apply bg-[#f9fbfd] text-[#323130] m-0 p-0 overflow-hidden h-screen w-screen font-sans antialiased;
   }
   button:focus-visible,
   [role="button"]:focus-visible {
@@ -19,37 +22,41 @@
 }
 
 /* ============ Tipografía del documento ============ */
+/* Valores por defecto de Word: Calibri 11 pt, interlineado ~1,08 y 8 pt tras párrafo */
 .ProseMirror {
   outline: none;
-  font-family: Calibri, 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 12pt;
-  line-height: 1.55;
-  color: #201f1e;
+  font-family: Calibri, Carlito, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 11pt;
+  line-height: 1.32;
+  color: #1f1f1f;
   word-wrap: break-word;
 }
-.ProseMirror ::selection { background: #cce8ff; }
+.ProseMirror ::selection { background: #b7d6f6; }
 
-.ProseMirror p { margin: 0 0 0.8em; }
+.ProseMirror p { margin: 0 0 8pt; }
+.ProseMirror p:empty::after,
+.ProseMirror p > br.ProseMirror-trailingBreak { line-height: inherit; }
 
 .ProseMirror h1, .ProseMirror h2, .ProseMirror h3 {
-  line-height: 1.25;
+  line-height: 1.2;
   font-weight: 600;
-  margin: 1.1em 0 0.4em;
+  margin: 16pt 0 6pt;
+  letter-spacing: -0.005em;
 }
 .ProseMirror > :first-child { margin-top: 0; }
-.ProseMirror h1 { font-size: 2.25em; color: #0f6cbd; }
-.ProseMirror h2 { font-size: 1.6em;  color: #0c5699; }
-.ProseMirror h3 { font-size: 1.25em; color: #094074; }
+.ProseMirror h1 { font-size: 20pt; color: #0f6cbd; }
+.ProseMirror h2 { font-size: 16pt; color: #0c5699; }
+.ProseMirror h3 { font-size: 13pt; color: #094074; }
 
 /* Listas (Tailwind preflight las deja sin viñetas ni números) */
-.ProseMirror ul, .ProseMirror ol { margin: 0 0 0.8em; padding-left: 1.75em; }
+.ProseMirror ul, .ProseMirror ol { margin: 0 0 8pt; padding-left: 1.6em; }
 .ProseMirror ul { list-style: disc; }
 .ProseMirror ul ul { list-style: circle; }
 .ProseMirror ul ul ul { list-style: square; }
 .ProseMirror ol { list-style: decimal; }
 .ProseMirror ol ol { list-style: lower-alpha; }
 .ProseMirror ol ol ol { list-style: lower-roman; }
-.ProseMirror li { margin: 0.15em 0; }
+.ProseMirror li { margin: 2pt 0; }
 .ProseMirror li > p { margin: 0; }
 .ProseMirror li > ul, .ProseMirror li > ol { margin: 0.15em 0 0; }
 

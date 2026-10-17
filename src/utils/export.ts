@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun, HTMLToDOCX } from 'docx';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 
 // Para una exportación básica extrayendo solo el texto plano:

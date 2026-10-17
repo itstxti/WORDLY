@@ -1,9 +1,18 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    pageBreak: {
+      setPageBreak: () => ReturnType;
+    };
+  }
+}
+
 export const PageBreak = Node.create({
   name: 'pageBreak',
   group: 'block',
   atom: true,
+  selectable: true,
 
   addAttributes() {
     return {
@@ -24,9 +33,10 @@ export const PageBreak = Node.create({
 
   addCommands() {
     return {
-      setPageBreak: () => ({ chain }) => {
-        return chain().insertContent({ type: this.name }).focus().run();
-      },
+      setPageBreak:
+        () =>
+        ({ chain }) =>
+          chain().insertContent({ type: this.name }).run(),
     };
   },
 });
